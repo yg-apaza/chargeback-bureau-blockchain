@@ -59,11 +59,11 @@ Parameters:
     AllowedPattern: "^[0-9a-zA-Z]+$"
     ConstraintDescription: Network name must be alphanumeric and cannot contain spaces.
     Type: String
-    Default: ngo
+    Default: chargebackbureau
   NetworkDescription:
     Description: An optional description of your network.
     Type: String
-    Default: Network for tracking donations made to non-profit organisations
+    Default: Chargeback bureau for Hackathon BBVA 2021
   Framework:
     Description: The blockchain protocol to use, such as Hyperledger Fabric
     Type: String
@@ -85,11 +85,11 @@ Parameters:
     AllowedPattern: "^[0-9a-zA-Z]+$"
     ConstraintDescription: MemberName must be alphanumeric.
     Type: String
-    Default: member
+    Default: froggy
   MemberDescription:
     Description: An optional description of your first member.
     Type: String
-    Default: First member 
+    Default: Froggy organization, the first member of the Blockchain 
   MemberAdminUsername:
     Description: The user name of your first member's admin user.
     AllowedPattern: '^[0-9a-zA-Z/]+$'
