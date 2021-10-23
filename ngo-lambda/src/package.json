@@ -1,5 +1,5 @@
 {
-    "name": "ngo-lambda",
+    "name": "chargeback-lambda",
     "version": "1.0.0",
     "description": "A Lambda function to execute transactions against Amazon Managed Blockchain",
     "main": "index.js",
