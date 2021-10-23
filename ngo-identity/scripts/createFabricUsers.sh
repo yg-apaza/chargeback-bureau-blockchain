@@ -13,26 +13,26 @@ FABRIC_USERNAME_MANAGER=chargebackManager
 # Users' password
 FABRICUSERPASSWORD=defaultpassword
 
-# Register and enroll NGO Donor
-echo Registering user 'ngoDonor'
-fabric-ca-client register --id.name "$FABRIC_USERNAME_USER" --id.affiliation "$MEMBERNAME" --tls.certfiles /home/ec2-user/managedblockchain-tls-chain.pem --id.type user --id.secret "$FABRICUSERPASSWORD" --id.attrs "fullname='Bob D Donor':ecert,role=ngo_donor:ecert"
+# Register and enroll User
+echo Registering user 'User'
+fabric-ca-client register --id.name "$FABRIC_USERNAME_USER" --id.affiliation "$MEMBERNAME" --tls.certfiles /home/ec2-user/managedblockchain-tls-chain.pem --id.type user --id.secret "$FABRICUSERPASSWORD" --id.attrs "fullname='Panda User':ecert,role=chargeback_user:ecert"
 
-echo Enrolling user 'ngoDonor'
+echo Enrolling user 'User'
 fabric-ca-client enroll -u https://"$FABRIC_USERNAME_USER":"$FABRICUSERPASSWORD"@"$CASERVICEENDPOINT" --tls.certfiles /home/ec2-user/managedblockchain-tls-chain.pem -M "$CERTS_FOLDER"/"$FABRIC_USERNAME_USER" --enrollment.attrs "role,fullname,hf.EnrollmentID,hf.Affiliation"
 
 # Put the credentials on Secrets Manager
-echo Putting user 'ngoDonor' private key and certificate on Secrets Manager
+echo Putting user 'User' private key and certificate on Secrets Manager
 aws secretsmanager create-secret --name "dev/fabricOrgs/$MEMBERNAME/$FABRIC_USERNAME_USER/pk" --secret-string "$(cat "$CERTS_FOLDER"/"$FABRIC_USERNAME_USER"/keystore/*)" --region "$REGION"
 aws secretsmanager create-secret --name "dev/fabricOrgs/$MEMBERNAME/$FABRIC_USERNAME_USER/signcert" --secret-string "$(cat "$CERTS_FOLDER"/"$FABRIC_USERNAME_USER"/signcerts/*)" --region "$REGION"
 
-# Register and enroll NGO Manager
-echo Registering user 'ngoManager'
-fabric-ca-client register --id.name "$FABRIC_USERNAME_MANAGER" --id.affiliation "$MEMBERNAME" --tls.certfiles /home/ec2-user/managedblockchain-tls-chain.pem --id.type user --id.secret "$FABRICUSERPASSWORD" --id.attrs "fullname='Alice Manager':ecert,role=ngo_manager:ecert"
+# Register and enroll Manager
+echo Registering user 'Manager'
+fabric-ca-client register --id.name "$FABRIC_USERNAME_MANAGER" --id.affiliation "$MEMBERNAME" --tls.certfiles /home/ec2-user/managedblockchain-tls-chain.pem --id.type user --id.secret "$FABRICUSERPASSWORD" --id.attrs "fullname='Paula Manager':ecert,role=chargeback_manager:ecert"
 
-echo Enrolling user 'ngoManager'
+echo Enrolling user 'Manager'
 fabric-ca-client enroll -u https://"$FABRIC_USERNAME_MANAGER":"$FABRICUSERPASSWORD"@"$CASERVICEENDPOINT" --tls.certfiles /home/ec2-user/managedblockchain-tls-chain.pem -M "$CERTS_FOLDER"/"$FABRIC_USERNAME_MANAGER" --enrollment.attrs "role,fullname,hf.EnrollmentID,hf.Affiliation"
 
 # Put the credentials on Secrets Manager
-echo Putting user 'ngoManager' private key and certificate on Secrets Manager
+echo Putting user 'Manager' private key and certificate on Secrets Manager
 aws secretsmanager create-secret --name "dev/fabricOrgs/$MEMBERNAME/$FABRIC_USERNAME_MANAGER/pk" --secret-string "$(cat "$CERTS_FOLDER"/"$FABRIC_USERNAME_MANAGER"/keystore/*)" --region "$REGION"
 aws secretsmanager create-secret --name "dev/fabricOrgs/$MEMBERNAME/$FABRIC_USERNAME_MANAGER/signcert" --secret-string "$(cat "$CERTS_FOLDER"/"$FABRIC_USERNAME_MANAGER"/signcerts/*)" --region "$REGION"
