@@ -35,20 +35,9 @@ async function queryByString(stub, queryString) {
   console.log('============= START : queryByString ===========');
   console.log("##### queryByString queryString: " + queryString);
 
-  let docType = "";
-  let startKey = "";
-  let endKey = "";
   let jsonQueryString = JSON.parse(queryString);
-  if (jsonQueryString['selector'] && jsonQueryString['selector']['docType']) {
-    docType = jsonQueryString['selector']['docType'];
-    startKey = docType + "0";
-    endKey = docType + "z";
-  }
-  else {
-    throw new Error('##### queryByString - Cannot call queryByString without a docType element: ' + queryString);   
-  }
 
-  let iterator = await stub.getStateByRange(startKey, endKey);
+  let iterator = await stub.getStateByRange('', '');
 
   let allResults = [];
   while (true) {
@@ -67,22 +56,19 @@ async function queryByString(stub, queryString) {
         jsonRes.Record = res.value.value.toString('utf8');
       }
 
-      let jsonRecord = jsonQueryString['selector'];
-      // If there is only a docType, no need to filter, just return all
+      let jsonRecord = jsonQueryString['selector'] || {};
+
       console.log('##### queryByString jsonRecord - number of JSON keys: ' + Object.keys(jsonRecord).length);
-      if (Object.keys(jsonRecord).length == 1) {
+      if (Object.keys(jsonRecord).length == 0) {
         allResults.push(jsonRes);
         continue;
       }
+
       for (var key in jsonRecord) {
         if (jsonRecord.hasOwnProperty(key)) {
           console.log('##### queryByString jsonRecord key: ' + key + " value: " + jsonRecord[key]);
-          if (key == "docType") {
-            continue;
-          }
           console.log('##### queryByString json iterator has key: ' + jsonRes.Record[key]);
           if (!(jsonRes.Record[key] && jsonRes.Record[key] == jsonRecord[key])) {
-            // we do not want this record as it does not match the filter criteria
             continue;
           }
           allResults.push(jsonRes);
@@ -165,7 +151,7 @@ let Chaincode = class {
    * @param {*} stub 
    * @param {*} args - JSON as follows:
    * {
-   *    "id":"edge",
+   *    "id":"1234",
    *    "account":"555555******5555",
    *    "amount": 100
    *    "currency": "USD"
@@ -179,7 +165,6 @@ let Chaincode = class {
     // args is passed as a JSON string
     let json = JSON.parse(args);
     let key = json['id'];
-    json['docType'] = 'chargeback';
 
     console.log('##### createChargeback payload: ' + JSON.stringify(json));
 
@@ -221,7 +206,7 @@ let Chaincode = class {
     console.log('============= START : queryAllChargebacks ===========');
     console.log('##### queryAllChargebacks arguments: ' + JSON.stringify(args));
  
-    let queryString = '{"selector": {"docType": "chargeback"}}';
+    let queryString = '{}';
     return queryByString(stub, queryString);
   }
 
@@ -248,9 +233,8 @@ let Chaincode = class {
     // args is passed as a JSON string
     let json = JSON.parse(args);
     let key = json['key'];
-    let docType = json['docType']
     console.log('##### queryHistoryForKey key: ' + key);
-    let historyIterator = await stub.getHistoryForKey(docType + key);
+    let historyIterator = await stub.getHistoryForKey(key);
     console.log('##### queryHistoryForKey historyIterator: ' + util.inspect(historyIterator));
     let history = [];
     while (true) {
