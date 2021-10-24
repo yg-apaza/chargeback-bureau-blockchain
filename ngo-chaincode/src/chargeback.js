@@ -9,6 +9,25 @@ const util = require('util');
  ************************************************************************************************/
 
 /**
+ * Returns an object containing information about the caller
+ * 
+ * @param {*} stub
+ */
+function getClientIdentity(stub) {
+  const ClientIdentity = shim.ClientIdentity;
+  let cid = new ClientIdentity(stub);
+  let result = {}
+  result['getID'] = cid.getID();
+  result['getMSPID'] = cid.getMSPID();
+  result['getX509Certificate'] = cid.getX509Certificate();
+  result['role'] = cid.getAttributeValue("role"); //e.g. acme_operations
+  result['affiliation'] = cid.getAttributeValue("hf.Affiliation"); //member name, e.g. ACME
+  result['enrollmentID'] = cid.getAttributeValue("hf.EnrollmentID"); //the username, e.g. ngoDonor
+  result['fullname'] = cid.getAttributeValue("fullname"); //e.g. Bob B Donor
+  return result;
+}
+
+/**
  * Executes a query using a specific key
  * 
  * @param {*} key - the key to use in the query
@@ -137,6 +156,17 @@ let Chaincode = class {
   async initLedger(stub, args) {
     console.log('============= START : Initialize Ledger ===========');
     console.log('============= END : Initialize Ledger ===========');
+  }
+
+  /**
+   * Returns caller identity information
+   * 
+   * @param {*} stub 
+   * @return {Buffer}
+   */
+  async getClientIdentityInfo(stub) {
+    const result = getClientIdentity(stub);
+    return Buffer.from(JSON.stringify(result));
   }
 
   /************************************************************************************************

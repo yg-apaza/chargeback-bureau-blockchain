@@ -49,8 +49,8 @@ Resources:
         Action: "lambda:InvokeFunction"
         Principal: "apigateway.amazonaws.com"
         SourceArn:
-          Fn::Sub: "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${DonorsAPIGateway}/*/*/*"
-  DonorsAPIGateway:
+          Fn::Sub: "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ChargebackAPIGateway}/*/*/*"
+  ChargebackAPIGateway:
     Type: 'AWS::Serverless::Api'
     Properties:
       Name: !Ref APINAME
@@ -72,7 +72,7 @@ Resources:
           version: "2020-08-01T12:00:00Z"
           title: "Donors API"
         paths:
-          /donors:
+          /chargebacks:
             get:
               consumes:
               - "application/json"
@@ -111,7 +111,7 @@ Resources:
                 httpMethod: "POST"
                 requestTemplates:
                   application/json: "{\n  \"functionType\": \"queryObject\",\n  \"chaincodeFunction\"\
-                    : \"queryAllDonors\",\n  \"chaincodeFunctionArgs\": {},\n  \"fabricUsername\"\
+                    : \"queryAllChargebacks\",\n  \"chaincodeFunctionArgs\": {},\n  \"fabricUsername\"\
                     \ : \"$context.authorizer.claims['custom:fabricUsername']\"\n}"
                 contentHandling: "CONVERT_TO_TEXT"
                 type: "aws"
