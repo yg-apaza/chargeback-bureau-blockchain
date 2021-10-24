@@ -153,8 +153,8 @@ Resources:
                 httpMethod: "POST"
                 requestTemplates:
                   application/json: "{\n  \"functionType\": \"invoke\",\n  \"chaincodeFunction\"\
-                    : \"createChargeback\",\n  \"chaincodeFunctionArgs\": \n      #set( $body\
-                    \ = $util.parseJson($input.body) )\n      $body,\n  \"fabricUsername\"\
+                    : \"createChargeback\",\n  \"chaincodeFunctionArgs\": \n $input.body \
+                    \ ,\n  \"fabricUsername\"\
                     \ : \"$context.authorizer.claims['custom:fabricUsername']\"\n}"
                 contentHandling: "CONVERT_TO_TEXT"
                 type: "aws"
