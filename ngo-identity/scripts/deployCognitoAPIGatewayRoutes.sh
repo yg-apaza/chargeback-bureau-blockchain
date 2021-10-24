@@ -18,7 +18,7 @@ PROJECT_ROOT_FOLDER=~/non-profit-blockchain/ngo-identity
 CLOUDFORMATION_TEMPLATE=${PROJECT_ROOT_FOLDER}/templates/cognito-apigateway-routes-template.yaml
 
 echo Deploying the Cloudformation stack
-LAMBDANAME=chargeback-fabric-lambda
+LAMBDANAME=chargebackbureau-fabric-lambda
 CHAINCODEID=chargeback
 CHANNEL=mychannel
 COGNITO_APIG_LAMBDA_STACK_NAME=cognito-apig-lambda-stack
