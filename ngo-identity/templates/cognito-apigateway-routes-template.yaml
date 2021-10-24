@@ -152,7 +152,10 @@ Resources:
                 passthroughBehavior: "when_no_templates"
                 httpMethod: "POST"
                 requestTemplates:
-                  application/json: "{\n  \"functionType\": \"invoke\",\n  \"chaincodeFunction\": \"createChargeback\",\n  \"chaincodeFunctionArgs\": \"#set($payload = $util.parseJson($input.json('$')))\\n#set($body = \\\"{ #foreach ($mapEntry in $payload.entrySet()) \\\"\\\"$mapEntry.key\\\"\\\": \\\"\\\"$mapEntry.value\\\"\\\", #end}\\\")\",\n  \"fabricUsername\": \"$context.authorizer.claims['custom:fabricUsername']\"\n}"
+                  application/json: "{\n  \"functionType\": \"invoke\",\n  \"chaincodeFunction\"\
+                    : \"createChargeback\",\n  \"chaincodeFunctionArgs\": \n      #set( $body\
+                    \ = $util.parseJson($input.body) )\n      $body,\n  \"fabricUsername\"\
+                    \ : \"$context.authorizer.claims['custom:fabricUsername']\"\n}"
                 contentHandling: "CONVERT_TO_TEXT"
                 type: "aws"
           /chargebacks/{id}:
