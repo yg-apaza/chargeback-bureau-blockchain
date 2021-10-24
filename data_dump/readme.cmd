@@ -1,4 +1,7 @@
->> Intrucciones de volcado de datos
+# Intrucciones
+
+## Volcar data
+
 1. Abrir cloud9: https://console.aws.amazon.com/cloud9/ide/927ac756b221403d813fa51c14bbeb52
 https://github.com/aws-samples/non-profit-blockchain
 
@@ -23,3 +26,7 @@ echo $ID_TOKEN
 curl -H "Authorization: $ID_TOKEN" -s -X POST "$API_URL/chargebacks" -d '{"id":"3", "amount":10}' -H "Content-Type: application/json"
 
 7. Ejecutar los scripts data_dump_accepted y data_dump_rejected
+
+## Consultar los datos
+
+curl -H "Authorization: $ID_TOKEN" -s -X GET "$API_URL/chargebacks"
