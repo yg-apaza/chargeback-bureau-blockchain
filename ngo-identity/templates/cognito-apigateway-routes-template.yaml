@@ -70,7 +70,7 @@ Resources:
         swagger: "2.0"
         info:
           version: "2020-08-01T12:00:00Z"
-          title: "Donors API"
+          title: "Chargebacks API"
         paths:
           /chargebacks:
             get:
@@ -259,4 +259,4 @@ Outputs:
     Value: !Ref CognitoAppClient
   APIGatewayURL:
     Description: "API Gateway endpoint URL for Dev stage"
-    Value: !Sub "https://${DonorsAPIGateway}.execute-api.${AWS::Region}.amazonaws.com/dev"
+    Value: !Sub "https://${ChargebackAPIGateway}.execute-api.${AWS::Region}.amazonaws.com/dev"
